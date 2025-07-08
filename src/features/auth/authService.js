@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/users/';
+// This line makes the code smart. It uses the Vercel environment variable in production,
+// but falls back to localhost for local development.
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/users/';
 
 // Register user
 const register = async (userData) => {
@@ -32,3 +34,4 @@ const authService = {
 };
 
 export default authService;
+
