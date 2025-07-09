@@ -1,14 +1,13 @@
 import axios from 'axios';
 
-// Get the base URL from the Vercel environment variable
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-const API_URL_USERS = `${API_BASE_URL}/api/users/`;
+// We now specify the '/users' part here
+const USER_API_URL = `${API_URL}/users/`;
 
 // Register user
 const register = async (userData) => {
-  // POST to https://.../api/users/
-  const response = await axios.post(API_URL_USERS, userData);
+  const response = await axios.post(USER_API_URL, userData);
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data));
   }
@@ -17,8 +16,7 @@ const register = async (userData) => {
 
 // Login user
 const login = async (userData) => {
-  // POST to https://.../api/users/login
-  const response = await axios.post(API_URL_USERS + 'login', userData);
+  const response = await axios.post(USER_API_URL + 'login', userData);
   if (response.data) {
     localStorage.setItem('user', JSON.stringify(response.data));
   }
@@ -37,5 +35,3 @@ const authService = {
 };
 
 export default authService;
-// This code is part of the authentication service for a web application.
-// It handles user registration, login, and logout functionalities.

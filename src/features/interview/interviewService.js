@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Get the base URL from the Vercel environment variable
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-const API_URL_INTERVIEW = `${API_BASE_URL}/api/interview/`;
+// We now specify the '/interview' part here
+const INTERVIEW_API_URL = `${API_URL}/interview/`;
 
 // Ask the AI a question
 const askQuestion = async (questionData, token) => {
@@ -12,10 +12,7 @@ const askQuestion = async (questionData, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-
-  // POST to https://.../api/interview/ask
-  const response = await axios.post(API_URL_INTERVIEW + 'ask', questionData, config);
-
+  const response = await axios.post(INTERVIEW_API_URL + 'ask', questionData, config);
   return response.data;
 };
 
@@ -26,10 +23,7 @@ const getHistory = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-
-  // GET from https://.../api/interview/history
-  const response = await axios.get(API_URL_INTERVIEW + 'history', config);
-
+  const response = await axios.get(INTERVIEW_API_URL + 'history', config);
   return response.data;
 };
 
@@ -39,5 +33,3 @@ const interviewService = {
 };
 
 export default interviewService;
-// This code is part of the interview service for a web application.
-// It handles interactions with an AI model for asking questions and retrieving chat history.
