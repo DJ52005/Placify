@@ -1,8 +1,11 @@
+// FILE PATH: frontend/src/pages/InterviewPage.jsx
+// This is the final code for your main AI Chat Page.
+
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { askQuestion, addUserMessage, reset } from '../features/interview/interviewSlice';
-import ChatHistorySidebar from '../components/ChatHistorySidebar'; // <-- 1. Import the new sidebar
+import { askQuestion, addUserMessage, getHistory, reset } from '../features/interview/interviewSlice';
+import ChatHistorySidebar from '../components/ChatHistorySidebar';
 
 function InterviewPage() {
   const [message, setMessage] = useState('');
@@ -19,14 +22,27 @@ function InterviewPage() {
   useEffect(() => {
     if (!user) {
       navigate('/login');
+    } else {
+        // When the page loads, get the user's chat history
+        dispatch(getHistory());
     }
+    
     if (isError) {
-      console.log(errorMessage);
+        console.log(errorMessage);
     }
+
+    // This return function will run when the component is unmounted (e.g., when logging out)
+    return () => {
+        dispatch(reset());
+    }
+  }, [user, navigate, isError, errorMessage, dispatch]);
+
+  // This second useEffect handles scrolling after the conversation updates
+  useEffect(() => {
     if (chatWindowRef.current) {
-      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+        chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
-  }, [user, navigate, conversation, isError, errorMessage]);
+  }, [conversation]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -47,9 +63,8 @@ function InterviewPage() {
   };
 
   return (
-    // 2. Create a new parent container for our two-column layout
     <div className="page-with-sidebar"> 
-      <ChatHistorySidebar /> {/* <-- 3. Add the sidebar component */}
+      <ChatHistorySidebar />
       
       <div className="interview-container">
         <div className="chat-window" ref={chatWindowRef}>

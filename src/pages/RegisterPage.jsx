@@ -1,19 +1,19 @@
+// FILE PATH: frontend/src/pages/LoginPage.jsx
+// This is the final code for your Login Page.
+
 import { useState, useEffect } from 'react';
+import { FaSignInAlt } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { FaUser } from 'react-icons/fa';
-import { register, reset } from '../features/auth/authSlice';
+import { login, reset } from '../features/auth/authSlice';
 
-function RegisterPage() {
+function LoginPage() {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
-    password2: '',
   });
 
-  const { name, email, password, password2 } = formData;
-
+  const { email, password } = formData;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,7 +26,7 @@ function RegisterPage() {
       alert(message);
     }
     if (isSuccess || user) {
-      navigate('/');
+      navigate('/interview'); // Go to chat page after successful login
     }
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
@@ -40,16 +40,8 @@ function RegisterPage() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      alert('Passwords do not match');
-    } else {
-      const userData = {
-        name,
-        email,
-        password,
-      };
-      dispatch(register(userData));
-    }
+    const userData = { email, password };
+    dispatch(login(userData));
   };
 
   if (isLoading) {
@@ -57,73 +49,26 @@ function RegisterPage() {
   }
 
   return (
-    <div className="page-content">
+    <>
       <section className='heading'>
-        <h1>
-          <FaUser /> Register
-        </h1>
-        <p>Please create an account</p>
+        <h1><FaSignInAlt /> Login</h1>
+        <p>Please log in to your account</p>
       </section>
-
       <section className='form'>
         <form onSubmit={onSubmit}>
           <div className='form-group'>
-            <input
-              type='text'
-              className='form-control'
-              id='name'
-              name='name'
-              value={name}
-              placeholder='Enter your name'
-              onChange={onChange}
-              required
-            />
+            <input type='email' className='form-control' id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange} required />
           </div>
           <div className='form-group'>
-            <input
-              type='email'
-              className='form-control'
-              id='email'
-              name='email'
-              value={email}
-              placeholder='Enter your email'
-              onChange={onChange}
-              required
-            />
+            <input type='password' className='form-control' id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange} required />
           </div>
           <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='password'
-              name='password'
-              value={password}
-              placeholder='Enter your password'
-              onChange={onChange}
-              required
-            />
-          </div>
-          <div className='form-group'>
-            <input
-              type='password'
-              className='form-control'
-              id='password2'
-              name='password2'
-              value={password2}
-              placeholder='Confirm your password'
-              onChange={onChange}
-              required
-            />
-          </div>
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block'>
-              Submit
-            </button>
+            <button type='submit' className='btn btn-block'>Submit</button>
           </div>
         </form>
       </section>
-    </div>
+    </>
   );
 }
 
-export default RegisterPage;
+export default LoginPage;
