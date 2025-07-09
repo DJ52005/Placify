@@ -11,12 +11,17 @@ body {
   background-color: #0c0a1a;
   color: #EAEAEA;
   overflow-x: hidden;
-  padding-top: 120px; 
 }
 
 a {
   text-decoration: none;
   color: #fff;
+}
+
+/* This is the new style for our main content area */
+.page-content {
+  padding-top: 120px; /* This creates space for the fixed header */
+  padding-bottom: 40px;
 }
 
 .container {
@@ -95,98 +100,6 @@ a {
   color: #FF0080;
 }
 
-/* --- Hero Section --- */
-.hero {
-  text-align: center;
-  padding: 40px 0;
-}
-
-.hero h1 {
-  font-size: 3.5rem;
-  line-height: 1.2;
-  font-weight: 800;
-  margin-bottom: 20px;
-  background: -webkit-linear-gradient(45deg, #8A2BE2, #FF0080, #fff);
-  -webkit-background-clip: text;
-  background-clip: text; /* <-- THE FIX IS HERE */
-  -webkit-text-fill-color: transparent;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin: 0 auto 40px auto;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.cta-button {
-  background: linear-gradient(90deg, #8A2BE2, #FF0080);
-  color: #fff;
-  padding: 15px 35px;
-  border: none;
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0px 10px 30px rgba(255, 0, 128, 0.3);
-}
-
-.cta-button:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 15px 35px rgba(255, 0, 128, 0.4);
-}
-
-
-/* --- Features Section --- */
-.features {
-  padding: 100px 0;
-  text-align: center;
-}
-
-.features h2 {
-  font-size: 2.5rem;
-  margin-bottom: 60px;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 40px;
-}
-
-.feature-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 40px;
-  backdrop-filter: blur(15px);
-  transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-10px);
-  border-color: #8A2BE2;
-}
-
-.feature-icon {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  color: #FF0080;
-}
-
-.feature-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-}
-
-.feature-card p {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-
 /* --- Forms & Headings --- */
 .heading {
   font-size: 2rem;
@@ -247,7 +160,7 @@ a {
 /* --- Page Layout with Sidebar --- */
 .page-with-sidebar {
   display: flex;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 160px); /* Adjust height based on header padding */
   gap: 20px;
 }
 
@@ -359,4 +272,8 @@ a {
 
 .chat-history-sidebar .btn {
   margin-top: 20px;
+}
+.chat-history-sidebar .btn:hover {
+  background: #FF0080;
+  border-color: #FF0080;
 }

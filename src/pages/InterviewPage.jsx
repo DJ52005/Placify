@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { askQuestion, addUserMessage, reset } from '../features/interview/interviewSlice';
-import ChatHistorySidebar from '../components/ChatHistorySidebar';
+import ChatHistorySidebar from '../components/ChatHistorySidebar'; // <-- 1. Import the new sidebar
 
 function InterviewPage() {
   const [message, setMessage] = useState('');
@@ -47,39 +47,37 @@ function InterviewPage() {
   };
 
   return (
-    // ✅ Wrap everything inside page-content
-    <div className="page-content">
-      <div className="page-with-sidebar">
-        <ChatHistorySidebar />
-
-        <div className="interview-container">
-          <div className="chat-window" ref={chatWindowRef}>
-            {conversation.map((entry, index) => (
-              <div key={index} className={`chat-bubble ${entry.role}`}>
-                <p>{entry.text}</p>
-              </div>
-            ))}
-            {isLoading && (
+    // 2. Create a new parent container for our two-column layout
+    <div className="page-with-sidebar"> 
+      <ChatHistorySidebar /> {/* <-- 3. Add the sidebar component */}
+      
+      <div className="interview-container">
+        <div className="chat-window" ref={chatWindowRef}>
+          {conversation.map((entry, index) => (
+            <div key={index} className={`chat-bubble ${entry.role}`}>
+              <p>{entry.text}</p>
+            </div>
+          ))}
+          {isLoading && (
               <div className="chat-bubble ai">
-                <p><i>AI is thinking...</i></p>
+                  <p><i>AI is thinking...</i></p>
               </div>
-            )}
-          </div>
-          <div className="chat-input-area">
-            <form onSubmit={onSubmit}>
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Ask a question or type your answer..."
-                required
-                disabled={isLoading}
-              />
-              <button type="submit" className="btn" disabled={isLoading}>
-                {isLoading ? 'Sending...' : 'Send'}
-              </button>
-            </form>
-          </div>
+          )}
+        </div>
+        <div className="chat-input-area">
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Ask a question or type your answer..."
+              required
+              disabled={isLoading}
+            />
+            <button type="submit" className="btn" disabled={isLoading}>
+              {isLoading ? 'Sending...' : 'Send'}
+            </button>
+          </form>
         </div>
       </div>
     </div>
