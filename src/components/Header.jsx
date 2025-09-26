@@ -17,7 +17,7 @@ function Header() {
     <header className='header'>
       <div className='container' style={{ marginTop: 0, marginBottom: 0 }}>
         <div className='logo'>
-          <Link to='/'>AI Study Buddy</Link> {/* <-- NAME FIXED */}
+          <Link to='/'>Home</Link> {/* <-- NAME FIXED */}
         </div>
         <nav className='nav'>
           <ul>

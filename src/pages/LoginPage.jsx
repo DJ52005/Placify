@@ -1,11 +1,6 @@
-// FILE PATH: frontend/src/pages/LoginPage.jsx
-// This is the final code for your Login Page.
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaSignInAlt } from 'react-icons/fa';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login, reset } from '../features/auth/authSlice';
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -15,21 +10,6 @@ function LoginPage() {
 
   const { email, password } = formData;
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (isError) {
-      alert(message);
-    }
-    if (isSuccess || user) {
-      navigate('/interview'); // Go to chat page after successful login
-    }
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -40,34 +20,55 @@ function LoginPage() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const userData = { email, password };
-    dispatch(login(userData));
+    // For now, just log form data and navigate
+    console.log('Login form submitted:', formData);
+    alert('Login successful (demo)');
+    navigate('/interview'); // redirect to chat page
   };
 
-  if (isLoading) {
-    return <h1>Loading...</h1>;
-  }
-
   return (
-    <>
-      <section className='heading'>
-        <h1><FaSignInAlt /> Login</h1>
-        <p>Please log in to your account</p>
-      </section>
-      <section className='form'>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="form bg-[#0c0a1a] p-10 rounded-lg shadow-lg w-full max-w-md">
+        {/* Heading */}
+        <div className="heading mb-6 text-center">
+          <h1 className="text-2xl font-bold flex items-center justify-center gap-2">
+            <FaSignInAlt /> Login
+          </h1>
+          <p className="text-gray-400 mt-2">Please log in to your account</p>
+        </div>
+
+        {/* Login Form */}
         <form onSubmit={onSubmit}>
-          <div className='form-group'>
-            <input type='email' className='form-control' id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange} required />
+          <div className="form-group">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={onChange}
+              placeholder="Enter your email"
+              required
+            />
           </div>
-          <div className='form-group'>
-            <input type='password' className='form-control' id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange} required />
+          <div className="form-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={onChange}
+              placeholder="Enter your password"
+              required
+            />
           </div>
-          <div className='form-group'>
-            <button type='submit' className='btn btn-block'>Submit</button>
+          <div className="form-group">
+            <button type="submit" className="btn btn-block">
+              Submit
+            </button>
           </div>
         </form>
-      </section>
-    </>
+      </div>
+    </div>
   );
 }
 

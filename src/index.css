@@ -112,7 +112,7 @@ a {
 
 .header .nav ul li a:hover,
 .header .nav ul li .btn:hover {
-  color: #FF0080;
+  color: #003cff;
 }
 
 /* --- Hero Section --- */
@@ -126,7 +126,7 @@ a {
   line-height: 1.2;
   font-weight: 800;
   margin-bottom: 20px;
-  background: -webkit-linear-gradient(45deg, #8A2BE2, #FF0080, #fff);
+  background: -webkit-linear-gradient(45deg, hwb(198 57% 9%), #003cff, #fff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -140,7 +140,7 @@ a {
 }
 
 .cta-button {
-  background: linear-gradient(90deg, #8A2BE2, #FF0080);
+  background: linear-gradient(90deg, hwb(198 57% 9%), #003cff);
   color: #fff;
   padding: 15px 35px;
   border: none;
@@ -187,13 +187,13 @@ a {
 
 .feature-card:hover {
   transform: translateY(-10px);
-  border-color: #8A2BE2;
+  border-color: #7eade3;
 }
 
 .feature-icon {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: #FF0080;
+  color: #003cff;
 }
 
 .feature-card h3 {
@@ -243,9 +243,9 @@ a {
 
 .btn {
   padding: 10px 20px;
-  border: 1px solid #8A2BE2;
+  border: 1px solid #7eade3;
   border-radius: 5px;
-  background: #8A2BE2;
+  background: #7eade3;
   color: #fff;
   font-size: 16px;
   font-weight: 700;
@@ -261,8 +261,8 @@ a {
 
 .btn:hover {
   transform: scale(0.98);
-  background: #FF0080;
-  border-color: #FF0080;
+  background: #003cff;
+  border-color: #003cff;
 }
 
 /* --- Page Layout with Sidebar --- */
@@ -382,6 +382,6 @@ a {
   margin-top: 20px;
 }
 .chat-history-sidebar .btn:hover {
-  background-color: #FF0080;
-  border-color: #FF0080;
+  background-color: #003cff;
+  border-color: #003cff;
 }

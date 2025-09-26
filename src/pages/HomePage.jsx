@@ -7,7 +7,8 @@ function HomePage() {
   return (
     <>
       <section className='hero'>
-        <h1>Your Personal AI Study Assistant</h1>
+        <h1>PLACIFY</h1>
+        <h2>The Power To Place You Ahead</h2>
         <p>
           From complex calculus to historical dates, get instant, expert-level answers for any subject. Your personal AI tutor is here to help you understand, learn, and excel. No question is too big or too small.
         </p>
