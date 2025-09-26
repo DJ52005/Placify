@@ -126,15 +126,15 @@ a {
 }
 
 .hero h1 {
-  font-size: 3.5rem;
-  line-height: 1.2;
-  font-weight: 800;
-  margin-bottom: 20px;
-  background: -webkit-linear-gradient(45deg, hwb(198 57% 9%), #003cff, #fff);
+  font-size: 5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #003cff, #60a5fa);
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
 }
+
 
 .hero p {
   font-size: 1.2rem;
@@ -621,4 +621,43 @@ a {
 .contact-info {
   font-weight: bold;
   color: #2563eb;
+}
+.hero-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.hero-title h1 {
+  font-size: 5rem; /* bigger title */
+  font-weight: 900;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grad-cap {
+  font-size: 3.5rem;
+  opacity: 0;
+  transform: translateY(-60px) rotate(-30deg);
+  animation: dropIn 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes dropIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-60px) rotate(-30deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(15px) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
 }

@@ -22,15 +22,19 @@ function HomePage() {
   return (
     <>
       <section className='hero'>
-        <h1>PLACIFY</h1>
-        <h2>The Power To Place You Ahead</h2>
-        <p>
-          Placify empowers you with interview preparation, real-time analytics, and personalized learning tools to help you ace your interviews and grow your career.
-        </p>
-        <Link to='/login' className='cta-button'>
-          Get Started
-        </Link>
-      </section>
+  <div className="hero-title">
+    <h1>PLACIFY</h1>
+    <span className="grad-cap">🎓</span>
+  </div>
+  <h2>The Power To Place You Ahead</h2>
+  <p>
+    Placify empowers you with interview preparation, real-time analytics, and personalized learning tools to help you ace your interviews and grow your career.
+  </p>
+  <Link to='/login' className='cta-button'>
+    Get Started
+  </Link>
+</section>
+
 
       <section className='features'>
         <h2>Why Choose Placify?</h2>
