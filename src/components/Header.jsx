@@ -15,38 +15,34 @@ function Header() {
 
   return (
     <header className='header'>
-      <div className='container' style={{ marginTop: 0, marginBottom: 0 }}>
-        <div className='logo'>
-          <Link to='/'>Home</Link> {/* <-- NAME FIXED */}
-        </div>
-        <nav className='nav'>
-          <ul>
-            {user ? (
-              // If user is logged in, show Chat link and Logout button
-              <>
-                <li>
-                  <Link to='/interview'>Chat</Link> {/* <-- NEW CHAT LINK */}
-                </li>
-                <li>
-                  <button className='btn' onClick={onLogout}>
-                    Logout
-                  </button>
-                </li>
-              </>
-            ) : (
-              // If user is logged out, show Login and Register links
-              <>
-                <li>
-                  <Link to='/login'>Login</Link>
-                </li>
-                <li>
-                  <Link to='/register'>Register</Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </nav>
-      </div>
+      <nav className='nav'>
+        <ul>
+          {user ? (
+            <>
+              <li>
+                <Link to='/interview'>Chat</Link> {/* Chat link shown if logged in */}
+              </li>
+              <li>
+                <button className='btn' onClick={onLogout}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to='/'>Home</Link>
+              </li>
+              <li>
+                <Link to='/login'>Login</Link>
+              </li>
+              <li>
+                <Link to='/register'>Register</Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
     </header>
   );
 }

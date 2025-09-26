@@ -1,130 +1,192 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import "./StudyRoom.css"; // For styles & canvas effect
 
-function StudyRoom() {
-  // Timer state
-  const [secondsLeft, setSecondsLeft] = useState(25 * 60); // 25 min default
+const themes = {
+  dark: { bg: "#0f172a", card: "#1e293b", text: "#f1f5f9" },
+  blue: { bg: "#1e3a8a", card: "#3b82f6", text: "#e0f2fe" },
+  purple: { bg: "#4c1d95", card: "#a78bfa", text: "#ede9fe" },
+  green: { bg: "#064e3b", card: "#10b981", text: "#d1fae5" },
+  sunset: { bg: "#7c2d12", card: "#f97316", text: "#fff7ed" },
+};
+
+const StudyRoom = () => {
+  const [theme, setTheme] = useState("dark");
+  const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [usePomodoro, setUsePomodoro] = useState(false);
+  const timerRef = useRef(null);
+  const canvasRef = useRef(null);
 
-  // Chat state
-  const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState([
-    { user: "System", text: "Welcome to the Study Room!" },
-  ]);
+  const pomodoroTime = 25 * 60;
 
-  // Timer countdown effect
+  // ---- Timer Logic ----
   useEffect(() => {
-    let interval = null;
-    if (isRunning && secondsLeft > 0) {
-      interval = setInterval(() => {
-        setSecondsLeft((prev) => prev - 1);
+    if (isRunning) {
+      timerRef.current = setInterval(() => {
+        setTime((prev) => {
+          if (usePomodoro && prev + 1 >= pomodoroTime) {
+            clearInterval(timerRef.current);
+            setIsRunning(false);
+            return pomodoroTime;
+          }
+          return prev + 1;
+        });
       }, 1000);
-    } else if (secondsLeft === 0) {
-      clearInterval(interval);
-      setIsRunning(false);
+    } else {
+      clearInterval(timerRef.current);
     }
-    return () => clearInterval(interval);
-  }, [isRunning, secondsLeft]);
+    return () => clearInterval(timerRef.current);
+  }, [isRunning, usePomodoro]);
 
-  // Format mm:ss
-  const formatTime = (time) => {
-    const m = Math.floor(time / 60);
-    const s = time % 60;
-    return `${m.toString().padStart(2, "0")}:${s
-      .toString()
-      .padStart(2, "0")}`;
+  const startTimer = () => setIsRunning(true);
+  const pauseTimer = () => setIsRunning(false);
+  const resetTimer = () => setTime(0);
+
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60).toString().padStart(2, "0");
+    const s = (sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
   };
 
-  // Handle chat submit
-  const sendMessage = (e) => {
-    e.preventDefault();
-    if (!chatInput.trim()) return;
-    setMessages([...messages, { user: "You", text: chatInput }]);
-    setChatInput("");
-  };
+  // ---- Color Flow Effect ----
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa"];
+    const particles = [];
+
+    const createParticles = (x, y) => {
+      for (let i = 0; i < 30; i++) {
+        particles.push({
+          x,
+          y,
+          radius: Math.random() * 6 + 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          velocityX: (Math.random() - 0.5) * 6,
+          velocityY: (Math.random() - 0.5) * 6,
+          life: 100,
+        });
+      }
+    };
+
+    const animate = () => {
+      ctx.fillStyle = "rgba(0,0,0,0.2)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p, i) => {
+        p.x += p.velocityX;
+        p.y += p.velocityY;
+        p.life--;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    const handleClick = (e) => {
+      createParticles(e.clientX, e.clientY);
+    };
+
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
 
   return (
-    <div className="h-screen w-full flex bg-gradient-to-br from-indigo-900 via-purple-900 to-black text-white">
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center p-10">
-        <h1 className="text-3xl font-bold mb-6">📚 Study Room</h1>
+    <div
+      className="studyroom-wrapper"
+      style={{
+        backgroundColor: themes[theme].bg,
+        color: themes[theme].text,
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "2rem",
+        transition: "all 0.5s",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{ position: "absolute", top: 0, left: 0, zIndex: 0 }}
+      />
 
-        {/* Timer */}
-        <div className="bg-white/10 rounded-xl shadow-lg p-10 text-center">
-          <h2 className="text-6xl font-mono mb-6">{formatTime(secondsLeft)}</h2>
-          <div className="space-x-4">
-            {!isRunning ? (
-              <button
-                onClick={() => setIsRunning(true)}
-                className="px-6 py-2 bg-green-500 rounded-lg hover:bg-green-600"
-              >
-                ▶ Start
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsRunning(false)}
-                className="px-6 py-2 bg-yellow-500 rounded-lg hover:bg-yellow-600"
-              >
-                ⏸ Pause
-              </button>
-            )}
-            <button
-              onClick={() => {
-                setIsRunning(false);
-                setSecondsLeft(25 * 60);
-              }}
-              className="px-6 py-2 bg-red-500 rounded-lg hover:bg-red-600"
-            >
-              🔄 Reset
-            </button>
-          </div>
-        </div>
+      <div style={{ zIndex: 1, display: "flex", gap: "0.5rem", marginBottom: "2rem" }}>
+        {Object.keys(themes).map((t) => (
+          <button
+            key={t}
+            style={{
+              backgroundColor: themes[t].card,
+              color: themes[t].text,
+              padding: "0.5rem 1rem",
+              borderRadius: "8px",
+              fontWeight: theme === t ? "700" : "500",
+              cursor: "pointer",
+            }}
+            onClick={() => setTheme(t)}
+          >
+            {t.charAt(0).toUpperCase() + t.slice(1)}
+          </button>
+        ))}
       </div>
 
-      {/* Sidebar (Chat + Participants) */}
-      <div className="w-80 bg-black/40 border-l border-white/10 flex flex-col">
-        <div className="p-4 border-b border-white/10">
-          <h2 className="text-lg font-semibold">👥 Participants</h2>
-          <ul className="mt-2 space-y-1 text-sm text-gray-300">
-            <li>✅ You</li>
-            <li>📖 Alice</li>
-            <li>💻 Bob</li>
-          </ul>
-        </div>
-
-        <div className="flex-1 p-4 overflow-y-auto space-y-2">
-          <h2 className="text-lg font-semibold mb-2">💬 Chat</h2>
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`p-2 rounded-lg ${
-                msg.user === "You" ? "bg-purple-600 self-end" : "bg-gray-700"
-              }`}
-            >
-              <strong>{msg.user}: </strong>
-              {msg.text}
-            </div>
-          ))}
-        </div>
-
-        {/* Chat input */}
-        <form onSubmit={sendMessage} className="p-4 border-t border-white/10 flex">
+      <div style={{ marginBottom: "2rem" }}>
+        <label style={{ fontWeight: "600" }}>
           <input
-            type="text"
-            className="flex-1 rounded-lg px-3 py-2 text-black"
-            placeholder="Type a message..."
-            value={chatInput}
-            onChange={(e) => setChatInput(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="ml-2 px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700"
-          >
-            Send
-          </button>
-        </form>
+            type="checkbox"
+            checked={usePomodoro}
+            onChange={() => {
+              setUsePomodoro(!usePomodoro);
+              resetTimer();
+            }}
+          />{" "}
+          Use Pomodoro (25 min)
+        </label>
+      </div>
+
+      <div
+        style={{
+          backgroundColor: themes[theme].card,
+          color: themes[theme].text,
+          padding: "3rem 5rem",
+          borderRadius: "20px",
+          fontSize: "4rem",
+          fontWeight: "700",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
+          marginBottom: "2rem",
+          minWidth: "220px",
+          textAlign: "center",
+          zIndex: 1,
+        }}
+      >
+        {formatTime(usePomodoro ? Math.min(time, pomodoroTime) : time)}
+      </div>
+
+      <div className="timer-buttons" style={{ zIndex: 1, display: "flex", gap: "1rem" }}>
+        <button className="btn start" onClick={startTimer}>
+          Start
+        </button>
+        <button className="btn pause" onClick={pauseTimer}>
+          Pause
+        </button>
+        <button className="btn reset" onClick={resetTimer}>
+          Reset
+        </button>
       </div>
     </div>
   );
-}
+};
 
 export default StudyRoom;

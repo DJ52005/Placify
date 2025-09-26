@@ -7,6 +7,10 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import InterviewPage from './pages/InterviewPage';
+import StudyRoom from './pages/StudyRoom';
+import EmotionSupport from './pages/EmotionSupport';
+import VoiceNotes from './pages/VoiceNotes';
+import MoodCheckIn from './pages/MoodCheckIn';
 
 function App() {
   return (
@@ -23,6 +27,11 @@ function App() {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/interview' element={<InterviewPage />} />
+            <Route path='/studyroom' element={<StudyRoom />} />
+            <Route path='/emotionsupport' element={<EmotionSupport />} />
+            <Route path='/voicenotes' element={<VoiceNotes />} />
+            <Route path='/moodcheckin' element={<MoodCheckIn />} />
+
           </Routes>
         </div>
       </main>

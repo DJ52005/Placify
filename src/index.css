@@ -120,6 +120,10 @@ a {
   text-align: center;
   padding: 40px 0;
 }
+.hero1 {
+  text-align: center;
+  padding: 40px 0;
+}
 
 .hero h1 {
   font-size: 3.5rem;
@@ -384,4 +388,164 @@ a {
 .chat-history-sidebar .btn:hover {
   background-color: #003cff;
   border-color: #003cff;
+}
+/* StudyRoom Dark Theme */
+.studyroom-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #1a1a1a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.studyroom-heading {
+  font-size: 2.5rem;
+  color: #00aaff;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.timer-display {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #00e0ff;
+  text-shadow: 0 0 15px #00e0ff, 0 0 30px #00e0ff;
+  margin-bottom: 2rem;
+}
+
+.timer-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn {
+  padding: 0.8rem 1.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: #fff;
+}
+
+.btn.start {
+  background: #28a745;
+  box-shadow: 0 0 10px #28a745;
+}
+.btn.pause {
+  background: #ffc107;
+  color: #222;
+  box-shadow: 0 0 10px #ffc107;
+}
+.btn.reset {
+  background: #dc3545;
+  box-shadow: 0 0 10px #dc3545;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.history-section {
+  margin-top: 2rem;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.history-section h2 {
+  margin-bottom: 1rem;
+  color: #00aaff;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.history-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.history-section li {
+  background: #111;
+  color: #00e0ff;
+  margin: 0.4rem 0;
+  padding: 0.6rem;
+  border-radius: 6px;
+  text-shadow: 0 0 10px #00e0ff;
+  font-weight: 500;
+}
+.mode-display {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #ff8c00;
+  text-shadow: 0 0 10px #ff8c00;
+  letter-spacing: 2px;
+}
+.timer-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn.start {
+  background: linear-gradient(45deg, #34d399, #10b981);
+  color: white;
+}
+
+.btn.pause {
+  background: linear-gradient(45deg, #fbbf24, #f59e0b);
+  color: white;
+}
+
+.btn.reset {
+  background: linear-gradient(45deg, #f87171, #ef4444);
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.theme-selector {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.theme-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.theme-btn.active {
+  transform: scale(1.1);
+  border: 2px solid #fff;
 }
