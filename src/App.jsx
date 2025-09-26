@@ -11,6 +11,7 @@ import StudyRoom from './pages/StudyRoom';
 import EmotionSupport from './pages/EmotionSupport';
 import VoiceNotes from './pages/VoiceNotes';
 import MoodCheckIn from './pages/MoodCheckIn';
+import ResourceHub from './pages/ResourceHub';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path='/emotionsupport' element={<EmotionSupport />} />
             <Route path='/voicenotes' element={<VoiceNotes />} />
             <Route path='/moodcheckin' element={<MoodCheckIn />} />
+            <Route path='/resourcehub' element={<ResourceHub />} />
 
           </Routes>
         </div>

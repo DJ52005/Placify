@@ -38,7 +38,9 @@ function EmotionSupport() {
           </div>
           <div className='feature-card'>
             <div className='feature-icon'>🌙</div>
+            <Link to="/ResourceHub" className='text-green-700 hover:underline'>
             <h3>Always Here</h3>
+            </Link>
             <p>
               Whether it’s day or night, you’ll always find support and encouragement whenever you need it.
             </p>
