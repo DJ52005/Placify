@@ -1,0 +1,2 @@
+# Placify
+Ai interview assistant
