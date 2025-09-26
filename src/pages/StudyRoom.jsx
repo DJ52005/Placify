@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./StudyRoom.css"; // For styles & canvas effect
+import "./StudyRoom.css";
 
 const themes = {
-  dark: { bg: "#0f172a", card: "#1e293b", text: "#f1f5f9" },
-  blue: { bg: "#1e3a8a", card: "#3b82f6", text: "#e0f2fe" },
-  purple: { bg: "#4c1d95", card: "#a78bfa", text: "#ede9fe" },
-  green: { bg: "#064e3b", card: "#10b981", text: "#d1fae5" },
-  sunset: { bg: "#7c2d12", card: "#f97316", text: "#fff7ed" },
+  dark: { bg: "linear-gradient(135deg,#0f172a,#1e293b)", card: "rgba(30,41,59,0.6)", text: "#f1f5f9" },
+  blue: { bg: "linear-gradient(135deg,#1e3a8a,#3b82f6)", card: "rgba(59,130,246,0.6)", text: "#e0f2fe" },
+  purple: { bg: "linear-gradient(135deg,#4c1d95,#a78bfa)", card: "rgba(167,139,250,0.6)", text: "#ede9fe" },
+  green: { bg: "linear-gradient(135deg,#064e3b,#10b981)", card: "rgba(16,185,129,0.6)", text: "#d1fae5" },
+  sunset: { bg: "linear-gradient(135deg,#7c2d12,#f97316)", card: "rgba(249,115,22,0.6)", text: "#fff7ed" },
 };
 
 const StudyRoom = () => {
@@ -19,7 +19,7 @@ const StudyRoom = () => {
 
   const pomodoroTime = 25 * 60;
 
-  // ---- Timer Logic ----
+  // Timer logic
   useEffect(() => {
     if (isRunning) {
       timerRef.current = setInterval(() => {
@@ -48,7 +48,13 @@ const StudyRoom = () => {
     return `${m}:${s}`;
   };
 
-  // ---- Color Flow Effect ----
+  // Convert hex color to RGB array
+  const hexToRgb = (hex) => {
+    const bigint = parseInt(hex.slice(1), 16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+  };
+
+  // Canvas effect: blobs + static background elements
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -56,85 +62,95 @@ const StudyRoom = () => {
     canvas.height = window.innerHeight;
 
     const colors = ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa"];
-    const particles = [];
+    const blobs = [];
 
-    const createParticles = (x, y) => {
-      for (let i = 0; i < 30; i++) {
-        particles.push({
-          x,
-          y,
-          radius: Math.random() * 6 + 2,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          velocityX: (Math.random() - 0.5) * 6,
-          velocityY: (Math.random() - 0.5) * 6,
-          life: 100,
-        });
-      }
+    // Static background elements
+    const staticElements = [];
+for (let i = 0; i < 50; i++) {
+  staticElements.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 6 + 3,      // slightly bigger
+    alpha: Math.random() * 0.3 + 0.1,   // more visible
+    color: colors[Math.floor(Math.random() * colors.length)],
+  });
+}
+
+    const createBlob = (x, y) => {
+      blobs.push({
+        x,
+        y,
+        radius: Math.random() * 80 + 50,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 0.6,
+        growth: Math.random() * 0.5 + 0.2,
+        fade: 0.005 + Math.random() * 0.01,
+      });
     };
 
     const animate = () => {
-      ctx.fillStyle = "rgba(0,0,0,0.2)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((p, i) => {
-        p.x += p.velocityX;
-        p.y += p.velocityY;
-        p.life--;
+      // Draw static elements
+      staticElements.forEach((s) => {
+        const [r, g, b] = hexToRgb(s.color);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = p.color;
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${s.alpha})`;
+        ctx.fill();
+      });
+
+      // Draw blobs
+      for (let i = blobs.length - 1; i >= 0; i--) {
+        const b = blobs[i];
+        b.radius += b.growth;
+        b.alpha -= b.fade;
+
+        const [r, g, bl] = hexToRgb(b.color);
+        const gradient = ctx.createRadialGradient(
+          b.x,
+          b.y,
+          b.radius * 0.2,
+          b.x,
+          b.y,
+          b.radius
+        );
+        gradient.addColorStop(0, `rgba(${r},${g},${bl},${b.alpha})`);
+        gradient.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
         ctx.fill();
 
-        if (p.life <= 0) particles.splice(i, 1);
-      });
+        if (b.alpha <= 0) blobs.splice(i, 1);
+      }
 
       requestAnimationFrame(animate);
     };
 
     animate();
 
-    const handleClick = (e) => {
-      createParticles(e.clientX, e.clientY);
-    };
-
+    const handleClick = (e) => createBlob(e.clientX, e.clientY);
     window.addEventListener("click", handleClick);
+
     return () => window.removeEventListener("click", handleClick);
   }, []);
 
   return (
     <div
       className="studyroom-wrapper"
-      style={{
-        backgroundColor: themes[theme].bg,
-        color: themes[theme].text,
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "2rem",
-        transition: "all 0.5s",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      style={{ background: themes[theme].bg, color: themes[theme].text }}
     >
-      <canvas
-        ref={canvasRef}
-        style={{ position: "absolute", top: 0, left: 0, zIndex: 0 }}
-      />
+      <canvas ref={canvasRef} className="bg-canvas" />
 
-      <div style={{ zIndex: 1, display: "flex", gap: "0.5rem", marginBottom: "2rem" }}>
+      {/* Theme Switch */}
+      <div className="theme-switcher">
         {Object.keys(themes).map((t) => (
           <button
             key={t}
-            style={{
-              backgroundColor: themes[t].card,
-              color: themes[t].text,
-              padding: "0.5rem 1rem",
-              borderRadius: "8px",
-              fontWeight: theme === t ? "700" : "500",
-              cursor: "pointer",
-            }}
+            className={`theme-btn ${theme === t ? "active" : ""}`}
+            style={{ background: themes[t].card, color: themes[t].text }}
             onClick={() => setTheme(t)}
           >
             {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -142,8 +158,10 @@ const StudyRoom = () => {
         ))}
       </div>
 
-      <div style={{ marginBottom: "2rem" }}>
-        <label style={{ fontWeight: "600" }}>
+      {/* Pomodoro toggle */}
+      <div className="pomodoro-toggle">
+        <span className="toggle-label">Use Pomodoro (25 min)</span>
+        <label className="switch">
           <input
             type="checkbox"
             checked={usePomodoro}
@@ -151,38 +169,26 @@ const StudyRoom = () => {
               setUsePomodoro(!usePomodoro);
               resetTimer();
             }}
-          />{" "}
-          Use Pomodoro (25 min)
+          />
+          <span className="slider"></span>
         </label>
       </div>
 
-      <div
-        style={{
-          backgroundColor: themes[theme].card,
-          color: themes[theme].text,
-          padding: "3rem 5rem",
-          borderRadius: "20px",
-          fontSize: "4rem",
-          fontWeight: "700",
-          boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-          marginBottom: "2rem",
-          minWidth: "220px",
-          textAlign: "center",
-          zIndex: 1,
-        }}
-      >
+      {/* Timer Display */}
+      <div className="timer-display">
         {formatTime(usePomodoro ? Math.min(time, pomodoroTime) : time)}
       </div>
 
-      <div className="timer-buttons" style={{ zIndex: 1, display: "flex", gap: "1rem" }}>
+      {/* Controls */}
+      <div className="timer-buttons">
         <button className="btn start" onClick={startTimer}>
-          Start
+          ▶ Start
         </button>
         <button className="btn pause" onClick={pauseTimer}>
-          Pause
+          ⏸ Pause
         </button>
         <button className="btn reset" onClick={resetTimer}>
-          Reset
+          ⟳ Reset
         </button>
       </div>
     </div>
