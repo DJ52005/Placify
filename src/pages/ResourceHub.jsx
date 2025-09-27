@@ -13,6 +13,13 @@ const blogs = [
   { title: "Mindfulness Techniques", link: "https://www.mindful.org/mindfulness-how-to-do-it/", type: "blog" },
 ];
 
+const quotes = [
+  { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+  { text: "Your limitation—it’s only your imagination.", author: "Anonymous" },
+  { text: "Push yourself, because no one else is going to do it for you.", author: "Anonymous" },
+  { text: "Difficulties in life don’t come to destroy you, but to help you realize your hidden potential.", author: "Anonymous" },
+];
+
 export default function ResourceHub() {
   return (
     <div className="resource-wrapper">
@@ -53,6 +60,19 @@ export default function ResourceHub() {
               <h3>{item.title}</h3>
               <p>Click to read the blog</p>
             </a>
+          ))}
+        </div>
+      </div>
+
+      {/* 🌟 Emotional Support & Motivation Section */}
+      <div className="resource-section">
+        <h2>💡 Emotional Support & Motivation</h2>
+        <div className="quotes-grid">
+          {quotes.map((q, idx) => (
+            <div key={idx} className="quote-card">
+              <p className="quote-text">“{q.text}”</p>
+              <p className="quote-author">— {q.author}</p>
+            </div>
           ))}
         </div>
       </div>

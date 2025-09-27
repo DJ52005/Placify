@@ -1,71 +1,91 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import "./VoiceNotes.css";
 
 export default function VoiceNotes() {
-  const [recording, setRecording] = useState(false);
-  const [transcript, setTranscript] = useState(""); // start fresh on reload
-  const [emergency, setEmergency] = useState(false);
-  const recognitionRef = useRef(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioURL, setAudioURL] = useState(null);
+  const [transcript, setTranscript] = useState("");
+  const [warning, setWarning] = useState(false);
 
-  // Clear old transcript from localStorage on page reload
-  useEffect(() => {
-    localStorage.removeItem("transcript");
-  }, []);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
-  // Save transcript to localStorage whenever it changes
-  useEffect(() => {
-    if (transcript) localStorage.setItem("transcript", transcript);
-  }, [transcript]);
+  // 🚨 Red flag words
+  const redFlags = [
+    "suicide",
+    "kill myself",
+    "end my life",
+    "hurt myself",
+    "can't go on",
+    "die",
+    "worthless",
+    "ending it",
+    "cannot take it anymore",
+  ];
 
-  const startRecording = () => {
-    setRecording(true);
-    setEmergency(false);
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.continuous = true;
-      recognition.interimResults = true;
-
-      recognition.onresult = (event) => {
-        let currentTranscript = transcript; // accumulate previous transcript
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          currentTranscript += event.results[i][0].transcript + " ";
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
         }
-        setTranscript(currentTranscript);
-
-        // Emergency detection
-        const redFlags = [
-          "suicide",
-          "kill myself",
-          "end my life",
-          "hurt myself",
-          "can't go on",
-          "die",
-          "worthless",
-        ];
-        const detected = redFlags.some((phrase) =>
-          currentTranscript.toLowerCase().includes(phrase)
-        );
-        setEmergency(detected);
       };
 
-      recognitionRef.current = recognition;
-      recognition.start();
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error("❌ Microphone error:", error);
+      alert("Please allow microphone access!");
     }
   };
 
-  const stopRecording = () => {
-    setRecording(false);
-    if (recognitionRef.current) recognitionRef.current.stop();
+  const stopRecording = async () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+
+      mediaRecorderRef.current.onstop = async () => {
+        const blob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+        setAudioURL(URL.createObjectURL(blob));
+
+        const formData = new FormData();
+        formData.append("file", blob, "voiceNote.webm");
+
+        try {
+          const res = await fetch("http://localhost:5000/transcribe", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await res.json();
+          console.log("✅ Transcription:", data);
+
+          if (data.text) {
+            setTranscript(data.text);
+
+            const containsRedFlag = redFlags.some((flag) =>
+              data.text.toLowerCase().includes(flag)
+            );
+            setWarning(containsRedFlag);
+          } else {
+            setTranscript("❌ No transcript received.");
+          }
+        } catch (err) {
+          console.error("❌ Error fetching transcription:", err);
+          setTranscript("Error transcribing audio.");
+        }
+      };
+    }
   };
 
   const clearTranscript = () => {
     setTranscript("");
-    localStorage.removeItem("transcript");
+    setWarning(false);
+    setAudioURL(null);
   };
 
   const downloadTranscript = () => {
@@ -85,11 +105,11 @@ export default function VoiceNotes() {
       <div className="left-panel">
         <h1 className="title">🎙️ Voice Notes</h1>
         <p className="subtitle">
-          Record your thoughts. <br />
-          Get instant transcripts. <br />
+          Record your thoughts.<br />
+          Get instant transcripts.<br />
           Stay safe with built-in wellbeing alerts.
         </p>
-        {recording && <div className="mic-wave"></div>}
+        {isRecording && <div className="mic-wave"></div>}
       </div>
 
       {/* Right Panel */}
@@ -99,7 +119,7 @@ export default function VoiceNotes() {
           <p>{transcript || "🎤 Press record and start speaking..."}</p>
         </div>
 
-        {emergency && (
+        {warning && (
           <div className="emergency-alert">
             <h3>🚨 Emergency Alert</h3>
             <p>
@@ -112,7 +132,7 @@ export default function VoiceNotes() {
 
         {/* Controls */}
         <div className="controls">
-          {!recording ? (
+          {!isRecording ? (
             <button className="mic-btn record" onClick={startRecording}>
               🎤
             </button>
@@ -128,6 +148,13 @@ export default function VoiceNotes() {
             🗑️
           </button>
         </div>
+
+        {audioURL && (
+          <div className="audio-preview">
+            <h3>Preview Recording</h3>
+            <audio controls src={audioURL}></audio>
+          </div>
+        )}
       </div>
     </div>
   );

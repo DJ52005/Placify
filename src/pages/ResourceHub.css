@@ -63,3 +63,42 @@
 .blog-card:hover {
   background: linear-gradient(135deg, #f97316, #fca5a5);
 }
+/* Quotes Section */
+.quotes-grid {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 280px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-style: italic;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Floating animation effect */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+.quote-text {
+  margin-bottom: 0.8rem;
+}
+
+.quote-author {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-weight: bold;
+}
