@@ -30,7 +30,7 @@ function EmotionSupport() {
           <div className='feature-card'>
             <div className='feature-icon'>🌱</div>
             <Link to = "/MoodCheckIn " className='text-green-700 hover:underline'>
-            <h3>Growth Mindset</h3>
+            <h3>This Is How You Feel</h3>
             </Link>
             <p>
               Build resilience and positivity with small steps toward mental well-being every day.
@@ -39,7 +39,7 @@ function EmotionSupport() {
           <div className='feature-card'>
             <div className='feature-icon'>🌙</div>
             <Link to="/ResourceHub" className='text-green-700 hover:underline'>
-            <h3>Always Here</h3>
+            <h3>Relax A Little</h3>
             </Link>
             <p>
               Whether it’s day or night, you’ll always find support and encouragement whenever you need it.

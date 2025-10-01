@@ -22,22 +22,22 @@ function HomePage() {
   return (
     <>
       <section className='hero'>
-  <div className="hero-title">
-    <h1>PLACIFY</h1>
-    <span className="grad-cap">🎓</span>
-  </div>
-  <h2>The Power To Place You Ahead</h2>
-  <p>
-    Placify empowers you with interview preparation, real-time analytics, and personalized learning tools to help you ace your interviews and grow your career.
-  </p>
-  <Link to='/login' className='cta-button'>
-    Get Started
-  </Link>
-</section>
+        <div className="hero-title">
+          <h1>PLACIFY</h1>
+          <span className="grad-cap">🎓</span>
+        </div>
+        <h2>The Power To Place You Ahead</h2>
+        <p>
+          Placify empowers you with interview preparation, real-time analytics, and personalized learning tools to help you ace your interviews and grow your career.
+        </p>
+        <Link to='/login' className='cta-button'>
+          Get Started
+        </Link>
+      </section>
 
 
       <section className='features'>
-        <h2>Why Choose Placify?</h2>
+        <h2>WHAT IS THERE IN PLACIFY?</h2>
         <div className='features-grid'>
           <div className='feature-card'>
             <div className='feature-icon'>🎯</div>
@@ -57,13 +57,17 @@ function HomePage() {
               Get personalized coaching with advanced emotion recognition and insight-driven tips tailored just for you.
             </p>
           </div>
-          <div className='feature-card'>
-            <div className='feature-icon'>📊</div>
-            <h3>AI Interviews</h3>
-            <p>
-              Monitor your interview skills with detailed analytics and actionable advice to keep improving.
-            </p>
-          </div>
+          
+          <a href="http://localhost:3000" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div className='feature-card' style={{ cursor: 'pointer' }}>
+              <div className='feature-icon'>📊</div>
+              <h3>AI Interviews</h3>
+              <p>
+                Monitor your interview skills with detailed analytics and actionable advice to keep improving.
+              </p>
+            </div>
+          </a>
+
         </div>
       </section>
 
@@ -80,28 +84,28 @@ function HomePage() {
         </div>
       </section>
 
-     {/* Contact Us Section */}
-<section className='contact-us'>
-  <h2 align = 'center'>Contact Us</h2>
-  <div className='contact-cards'>
-    <div className='contact-card'>
-      <span className='contact-icon'>📧</span>
-      <p>Email</p>
-      <p className='contact-info'>support@placify.com</p>
-    </div>
-    <div className='contact-card'>
-      <span className='contact-icon'>📞</span>
-      <p>Phone</p>
-      <p className='contact-info'>+91 98765 43210</p>
-    </div>
-    <div className='contact-card'>
-      <span className='contact-icon'>🌐</span>
-      <p>Website</p>
-      <p className='contact-info'>www.placify.com</p>
-    </div>
-  </div>
-</section>
-</>
+      {/* Contact Us Section */}
+      <section className='contact-us'>
+        <h2 align='center'>Contact Us</h2>
+        <div className='contact-cards'>
+          <div className='contact-card'>
+            <span className='contact-icon'>📧</span>
+            <p>Email</p>
+            <p className='contact-info'>support@placify.com</p>
+          </div>
+          <div className='contact-card'>
+            <span className='contact-icon'>📞</span>
+            <p>Phone</p>
+            <p className='contact-info'>+91 98765 43210</p>
+          </div>
+          <div className='contact-card'>
+            <span className='contact-icon'>🌐</span>
+            <p>Website</p>
+            <p className='contact-info'>www.placify.com</p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 

@@ -84,7 +84,7 @@ export default function StudyRoom() {
         <svg width="300" height="300">
           <circle
             className="progress-bg"
-            stroke="#2d3748"
+            stroke="#8594afff"
             strokeWidth="12"
             fill="transparent"
             r={radius}
@@ -93,7 +93,7 @@ export default function StudyRoom() {
           />
           <circle
             className="progress-bar"
-            stroke="#f87171"
+            stroke="#3762c5ff"
             strokeWidth="12"
             fill="transparent"
             r={radius}

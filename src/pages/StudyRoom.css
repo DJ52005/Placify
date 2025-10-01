@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: linear-gradient(135deg #0d5cdd);
   color: #e2e8f0;
   font-family: "Poppins", sans-serif;
 }
@@ -19,7 +19,7 @@
   padding: 0.6rem 1.5rem;
   border-radius: 999px;
   border: none;
-  background: #2d3748;
+  background: #134294;
   color: #cbd5e1;
   cursor: pointer;
   font-size: 1rem;
@@ -29,7 +29,7 @@
 .mode-tabs button.active {
   background: #f87171;
   color: white;
-  box-shadow: 0 4px 15px rgba(248, 113, 113, 0.5);
+  box-shadow: 0 4px 15px rgba(157, 35, 35, 0.5);
 }
 
 .circle-timer {
@@ -55,7 +55,7 @@
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
   transition: stroke-dashoffset 1s linear;
-  filter: drop-shadow(0 0 8px rgba(248, 113, 113, 0.7));
+  filter: drop-shadow(0 0 8px rgba(101, 77, 77, 0.7));
 }
 
 .time-text {
